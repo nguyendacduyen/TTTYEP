@@ -17,12 +17,14 @@
   <script type="importmap">
 {
   "imports": {
+    "react-dom/client": "https://esm.sh/react-dom@18.2.0/client",
     "react-dom/": "https://esm.sh/react-dom@18.2.0/",
     "react/": "https://esm.sh/react@18.2.0/",
     "react": "https://esm.sh/react@18.2.0",
+    "prop-types": "https://esm.sh/prop-types@15.8.1",
     "@google/genai": "https://esm.sh/@google/genai@0.0.12",
-    "lucide-react": "https://esm.sh/lucide-react@0.344.0",
-    "recharts": "https://esm.sh/recharts@2.12.3",
+    "lucide-react": "https://esm.sh/lucide-react@0.344.0?external=react",
+    "recharts": "https://esm.sh/recharts@2.12.3?external=react,react-dom,prop-types",
     "firebase/app": "https://esm.sh/firebase@10.9.0/app",
     "firebase/database": "https://esm.sh/firebase@10.9.0/database",
     "firebase/": "https://esm.sh/firebase@^12.7.0/"
@@ -32,5 +34,36 @@
 </head>
   <body class="bg-slate-50 text-slate-900 antialiased">
     <div id="root"></div>
+    <script>
+      // Enhanced error handler that works even if 'root' doesn't exist or React fails completely
+      window.addEventListener('error', function(event) {
+        console.error("Global Error:", event.error);
+        const root = document.getElementById('root');
+        const errorMessage = '<div style="padding: 20px; color: #dc2626; font-family: sans-serif; background: #fef2f2; border: 1px solid #fee2e2; margin: 20px; border-radius: 8px;">' +
+          '<h2 style="margin-top:0">Đã xảy ra lỗi khởi động ứng dụng</h2>' +
+          '<p>Vui lòng kiểm tra Console (F12) để biết chi tiết.</p>' +
+          '<pre style="background:white; padding:10px; overflow:auto; border:1px solid #e5e7eb; border-radius:4px;">' + (event.error ? event.error.toString() : event.message) + '</pre>' +
+          '</div>';
+        
+        if (root) {
+          root.innerHTML = errorMessage;
+        } else {
+          document.body.innerHTML = errorMessage;
+        }
+      });
+
+      window.addEventListener('unhandledrejection', function(event) {
+         console.error("Unhandled Rejection:", event.reason);
+         const root = document.getElementById('root');
+         const errorMessage = '<div style="padding: 20px; color: #dc2626; font-family: sans-serif; background: #fef2f2; border: 1px solid #fee2e2; margin: 20px; border-radius: 8px;">' +
+           '<h2 style="margin-top:0">Lỗi Promise không được xử lý</h2>' +
+           '<pre style="background:white; padding:10px; overflow:auto; border:1px solid #e5e7eb; border-radius:4px;">' + event.reason + '</pre>' +
+           '</div>';
+
+         if (root && (!root.innerHTML || root.innerHTML.trim() === '')) {
+            root.innerHTML = errorMessage;
+         }
+      });
+    </script>
   </body>
 </html>

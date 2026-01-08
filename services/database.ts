@@ -1,4 +1,6 @@
-import * as firebaseApp from "firebase/app";
+// @ts-ignore: Suppress TS checking for module resolution in web editor
+import { initializeApp } from "firebase/app";
+// @ts-ignore: Suppress TS checking for module resolution in web editor
 import { getDatabase, ref, onValue, set, update, remove } from "firebase/database";
 import { Performance, Score, Judge } from '../types';
 
@@ -15,8 +17,8 @@ const firebaseConfig = {
 };
 
 // Khởi tạo Firebase
-// Sử dụng named export initializeApp (chuẩn Modular SDK qua esm.sh)
-const app = firebaseApp.initializeApp(firebaseConfig);
+// Sử dụng standard named import, tương thích với import map firebase@10.9.0
+const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
 export interface AppData {
