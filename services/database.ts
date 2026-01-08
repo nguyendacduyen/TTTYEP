@@ -1,4 +1,4 @@
-import { initializeApp } from "firebase/app";
+import * as firebaseApp from "firebase/app";
 import { getDatabase, ref, onValue, set, update, remove } from "firebase/database";
 import { Performance, Score, Judge } from '../types';
 
@@ -14,8 +14,9 @@ const firebaseConfig = {
   measurementId: "G-TBC0TX20TS"
 };
 
-// Khởi tạo Firebase (Modular SDK)
-const app = initializeApp(firebaseConfig);
+// Khởi tạo Firebase
+// Sử dụng named export initializeApp (chuẩn Modular SDK qua esm.sh)
+const app = firebaseApp.initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
 export interface AppData {
@@ -28,7 +29,7 @@ export interface AppData {
 
 class DatabaseService {
   constructor() {
-    console.log("🔥 Đã kết nối Firebase Realtime Database (Modular SDK)");
+    console.log("🔥 Đã kết nối Firebase Realtime Database");
   }
 
   // --- SUBSCRIBER (Lắng nghe dữ liệu realtime) ---

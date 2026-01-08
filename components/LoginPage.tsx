@@ -16,7 +16,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ judges, onLoginSuccess }) => {
   const handleAdminLogin = (e: React.FormEvent) => {
     e.preventDefault();
     // Hardcoded admin password for demo purposes
-    if (adminPassword === 'admin') {
+    if (adminPassword === 'admin@123') {
       onLoginSuccess(UserRole.ADMIN);
     } else {
       setError('Mật khẩu quản trị không đúng (Mặc định: admin)');

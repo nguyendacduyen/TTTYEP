@@ -1,14 +1,16 @@
 import { GoogleGenAI } from "@google/genai";
 
 export const generateCommentSuggestion = async (score: number, performanceName: string, maxScore: number = 10): Promise<string> => {
-  // Guideline: The API key must be obtained exclusively from the environment variable process.env.API_KEY.
-  if (!process.env.API_KEY) {
+  // Kiểm tra an toàn: process.env có thể không tồn tại trong một số môi trường trình duyệt thuần
+  const apiKey = typeof process !== 'undefined' && process.env ? process.env.API_KEY : undefined;
+
+  if (!apiKey) {
     console.warn("Gemini API Key is missing.");
     return "Vui lòng cấu hình API Key để sử dụng tính năng này.";
   }
 
   // Guideline: Always use const ai = new GoogleGenAI({apiKey: process.env.API_KEY});
-  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+  const ai = new GoogleGenAI({ apiKey: apiKey });
 
   try {
     const percentage = (score / maxScore) * 100;
@@ -26,6 +28,7 @@ export const generateCommentSuggestion = async (score: number, performanceName: 
     `;
 
     // Guideline: Use ai.models.generateContent
+    // Model Gemini 3 Flash Preview cho Basic Text Tasks
     const response = await ai.models.generateContent({
       model: 'gemini-3-flash-preview',
       contents: prompt,
